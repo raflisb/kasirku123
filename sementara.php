@@ -75,7 +75,7 @@
                     <div class="span12">
                         <div class="box">
                             <div class="box-title" style="background-color: #0090ff">
-                                <h3><i class="icon-reorder"></i> Data pelanggan Baru </h3>
+                                <h3><i class="icon-reorder"></i> Pilih Barang</h3>
                                 <div class="box-tool">
                                     <a data-action="collapse" href="#"><i class="icon-chevron-up"></i></a>
                                     <a data-action="close" href="#"><i class="icon-remove"></i></a>

@@ -143,7 +143,7 @@
                                 </div>
                             </div>
                             <div class="box-content">
-                                <form action="logic/Transaksi_jual.php" class="form-horizontal " method="post">
+                                <form action="logic/Transaksi_Jual.php" class="form-horizontal " method="post">
 
 
                              <div class="control-group">
@@ -156,7 +156,7 @@
                              <div class="control-group">
                                       <label class="control-label">Jenis Pembayaran</label>
                                       <div class="controls">
-                                         <select class="span9">
+                                         <select class="span9" name="jenis_bayar">
                                                 <option value="cash">Cash</option>
                                                 <option value="debit">Debit</option>
                                                 <option value="bg">Bilyet Giro</option>
@@ -165,10 +165,24 @@
                                       </div>
                             </div>
 
+                             <div class="control-group">
+                                      <label class="control-label">Kredit</label>
+                                      <div class="controls">
+                                         <input type="text" class="span9" name="kredit" />  
+                                      </div>
+                            </div>
+
+                             <div class="control-group">
+                                      <label class="control-label">DP</label>
+                                      <div class="controls">
+                                         <input type="number" class="span9" name="dp" />  
+                                      </div>
+                            </div>
+
                             <div class="control-group">
                                       <label class="control-label">Total</label>
                                       <div class="controls">
-                                         <td><?php echo "Rp. ".$isi['total_bayar']; ?></td>
+                                         <input type="number" name="jmlh_harga_jual" value="<?php echo $isi['total_bayar']; ?>"> 
                                       </div>
                             </div>
 

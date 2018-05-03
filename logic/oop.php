@@ -85,11 +85,17 @@
 	{
 		$query = "SELECT * from brg_sementara"; 
 		$hasil = $this->con->query($query); 
-		while ($nilai = mysqli_fetch_array($hasil))
-		{
-			$value[] = $nilai; 
-		} 
-			return $value;
+
+			while ($nilai = mysqli_fetch_array($hasil))
+			{
+				$value[] = $nilai; 
+			} 
+				error_reporting(0);
+				return  $value;
+	
+	
+		
+		
 	}
 
 
@@ -266,26 +272,70 @@
 
 			}
 		}
+		error_reporting(0);
 
 		return $ini; 
 	}
 
 	function insertTransaksiJual() 
 	{
+		
+		//start auto increment untuk no_nota_jual
+		
+		 $query_no= "SELECT MAX(no_nota_jual) as last from transaksi_jual";
+
+		$hasil_no = $this->con->query($query_no); 
+		$isi_hasil_no = mysqli_fetch_array($hasil_no); 
+		$no_terakhir = $isi_hasil_no['last']; 
+		
+		
+		$terakhir = substr($no_terakhir,3,2);
+		$no_selanjutnya= $terakhir+1; 
+		
+
+		$nj= 'NJ';
+		$no_baru = $nj.sprintf('%02s', $no_selanjutnya);
+		// end auto increment		
+		
+
+
 		$query_sementara = "SELECT * FROM brg_sementara"; 
 		$hasil_sementara = $this->con->query($query_sementara);
-		
-		$query_id = "SELECT MAX(no_nota_jual) as last from transaksi_jual";
 
-		$hasil_id = $this->con->query($query_id); 
-		$isi_hasil_id = mysqli_fetch_array($hasil_id); 
-		$id_terakhir = $isi_hasil_id['last']; 
-		$terakhir
-		/* $no_nota_jual = $_POST['no_nota_jual']; 
-		$id_plgn = $_POST['id_plgn'];
-		$jenis_bayar = $_POST ['jenis_bayar']; 
-		$jmlh_harga_jual = $_POST ['jmlh_harga_jual']; */ 
+		while($row = mysqli_fetch_array($hasil_sementara))
+		{
+			$nama_brg_sementara = $row['nama_brg'];	
+			$stok_brg_sementara = $row['stok'];
+			$jenis_bayar = $_POST ['jenis_bayar']; 
+			$kredit = $_POST['kredit']; 
+			$jmlh_harga_jual = $_POST ['jmlh_harga_jual'];
+			$dp = $_POST['dp'];
+			$tgl = date('y-m-d');
+			$tgl_trsj = $tgl; 
 
+
+			$query_insert_transaksi="insert into transaksi_jual values ('$no_baru', NULL,'$jenis_bayar', '$kredit', '$jmlh_harga_jual', '$dp', '$tgl')"; 
+			$insert_transaksi = $this->con->query($query_insert_transaksi);
+
+
+			$kode_sementara = "select * from barang where nama_brg ='$nama_brg_sementara'";
+			$query_kode= $this->con->query($kode_sementara);
+			while ($isi_kode = mysqli_fetch_array($query_kode))
+				{
+					$kode_barang = $isi_kode['kode_brg'];
+					$stok_brg= $isi_kode['stok_brg'];
+					$stok_akhir = $stok_brg - $stok_brg_sementara; 
+					$query_insert_detail = "insert into detail_transaksi_jual values ('$no_baru', '$kode_barang', '$stok_brg_sementara')"; 
+					$insert_detail= $this->con->query($query_insert_detail); 
+				
+					$query_update_barang = "update barang set stok_brg = '$stok_akhir' where nama_brg ='$nama_brg_sementara'";
+					$update_barang= $this->con->query($query_update_barang); 
+
+					$query_hapus_sementara= "delete from brg_sementara";
+					$hapus_sementara = $this->con->query($query_hapus_sementara); 
+				}
+
+		}	
 	}
 	function deletePelanggan()
 		{	

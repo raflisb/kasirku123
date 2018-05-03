@@ -1,8 +1,8 @@
 <?php 
 
-/*include 'Database.php'; 
+ 
 
-	$query = "SELECT MAX(no_nota_jual) as last from transaksi_jual"; 
+	/*query = "SELECT MAX(no_nota_jual) as last from transaksi_jual"; 
 	$hasil = mysqli_query($connect, $query); 
 	$isi = mysqli_fetch_array($hasil);
 	$nomorterakhir = $isi['last'];
@@ -14,13 +14,13 @@
 	$idbaru = $nj.sprintf('%02s', $selanjutnya) ; 
 	echo $idbaru;
 
-
-	include 'logic/oop.php'; 
+*/
+	 include 'logic/oop.php'; 
 	$oop = new oop(); 
 	$baru = $oop->insertTransaksiJual(); 
 	foreach ($baru as $isi) 
 	{
-		echo $isi['last'];
+		echo $isi."<br>";
 	}
 	
 ?>
