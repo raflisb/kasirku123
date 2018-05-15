@@ -107,7 +107,7 @@
             include 'logic/oop.php'; 
             $oop = new oop(); 
             $nomor=1;  
-        	foreach ($oop->readBarang() as $isi)
+        	foreach ($oop->readData('barang') as $isi)
         	{ ?>
 
         	<td><?php echo $nomor++?></td> 

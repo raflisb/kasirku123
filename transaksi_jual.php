@@ -168,7 +168,8 @@
                              <div class="control-group">
                                       <label class="control-label">Kredit</label>
                                       <div class="controls">
-                                         <input type="text" class="span9" name="kredit" />  
+                                       Ya  : <input type="radio" name="kredit" value="Y" /> &nbsp
+                                       Tidak : <input type="radio" name="kredit" value="T" />
                                       </div>
                             </div>
 

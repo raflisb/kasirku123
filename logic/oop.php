@@ -4,100 +4,37 @@
 	{ 
 
 		// Property 
-		var $host ='localhost'; 
-		var $username ='root';
-		var $pass =''; 
-		var $db ='sim'; 
+		const host ='localhost'; 
+		const username ='root';
+		const pass =''; 
+		const db ='sim'; 
 		var $con; 
 
 		//Method 
 
 		public function __construct () 
 		{
-			$this->con = new mysqli($this->host, $this->username, $this->pass, $this->db); 
+			$this->con = new mysqli(self::host, self::username, self::pass, self::db); 
 
 		}
 
 
-		function readPelanggan () 
+		public	function readData ($table) 
  
 		{ 
-			$query = "SELECT  * from pelanggan"; 
+			$query = "SELECT  * from $table"; 
 			$hasil = $this->con->query($query); 
 			while($nilai = mysqli_fetch_array($hasil))
 			{ 
 				$value[] = $nilai; 
 			}
+			error_reporting(0);
 			return $value;
 
 		}
 
-	function readSupplier ()
 
-		{
-			$query = "SELECT  * from supplier"; 
-			$hasil = $this->con->query($query); 
-			while($nilai = mysqli_fetch_array($hasil))
-			{ 
-				$value[] = $nilai; 
-			}
-			return $value;
-		} 
-
-	function readBarang () 
-		{ 
-			$query = "SELECT * from barang"; 
-			$hasil = $this->con->query($query); 
-			while($nilai  = mysqli_fetch_array($hasil))
-			{
-				$value[] = $nilai; 
-
-			}
-			return $value;
-		}
-
-	//function readBarangGet()
-	//	{
-	//		$kode_brg = $_GET('kode');
-	//		query = "SELECT * from barang where kode_brg = '@kode_brg'"; 
-	//		$hasil = $this->con->query($query); 
-	//		while($nilai  = mysqli_fetch_array($hasil))
-	//		{
-	//			$value[] = $nilai; 
-
-	//		}
-	//		return $value;
-	//	}
-
-
-	function readKirim () 
-		{ 
-			$query ="select * from kirim"; 
-			$hasil = $this->con->query($query); 
-			while ($nilai = mysqli_fetch_array($hasil))
-				{ 
-					$value[] = $nilai; 
-
-				}
-				return $value ;
-		}
-	function readSementara()
-	{
-		$query = "SELECT * from brg_sementara"; 
-		$hasil = $this->con->query($query); 
-
-			while ($nilai = mysqli_fetch_array($hasil))
-			{
-				$value[] = $nilai; 
-			} 
-				error_reporting(0);
-				return  $value;
-	
-	
-		
-		
-	}
-
+			
 
 	function insertSementara () 
 	{ 
@@ -253,8 +190,7 @@
 		$tampil_sementara = "SELECT * from brg_sementara"; 
 		$hasil= $this->con->query($tampil_sementara); 
 
-		if (mysqli_num_rows($hasil)>0)
-		{
+		
 			while($data=mysqli_fetch_array($hasil))
 			{
 				$nama=$data['nama_brg']; 
@@ -271,10 +207,27 @@
 				$ini[] = $value;
 
 			}
-		}
+
 		error_reporting(0);
 
 		return $ini; 
+	}	
+
+	function kredit() 
+	{
+		$kredit= $_POST['kredit']; 
+
+		if($kredit == "Y")
+		{
+			echo "berhasil";
+
+
+		}
+		else {
+			echo "gagal";
+		}
+	
+
 	}
 
 	function insertTransaksiJual() 
@@ -289,12 +242,13 @@
 		$no_terakhir = $isi_hasil_no['last']; 
 		
 		
-		$terakhir = substr($no_terakhir,3,2);
+		$terakhir = substr($no_terakhir,2,2);
 		$no_selanjutnya= $terakhir+1; 
 		
 
 		$nj= 'NJ';
 		$no_baru = $nj.sprintf('%02s', $no_selanjutnya);
+		return $no_baru; 
 		// end auto increment		
 		
 

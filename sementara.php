@@ -119,10 +119,12 @@
                               <div class="control-group">
                      
                                       <div class="controls">
-                                         <button class="btn btn-primary" type="submit">Simpan</button>  
+                                         <button class="btn btn-primary" type="submit">Tambah</button> &nbsp
+                                         <a href="transaksi_jual.php"  class="btn btn-primary">Kembali </a>
                                       </div>       
                             </div>
                         </form>
+
                     </div>
                 <!-- Table List pelanggan --> 
                 <div class="row-fluid">

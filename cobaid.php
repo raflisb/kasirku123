@@ -17,11 +17,9 @@
 */
 	 include 'logic/oop.php'; 
 	$oop = new oop(); 
-	$baru = $oop->insertTransaksiJual(); 
-	foreach ($baru as $isi) 
-	{
-		echo $isi."<br>";
-	}
+	$baru = $oop->autoIncrement(); 
+	
+	echo $baru;
 	
 ?>
 

@@ -106,7 +106,7 @@
             $oop = new oop(); 
             $nomor=1;
             $id=1001; 
-          foreach ($oop->readSupplier() as $isi)
+          foreach ($oop->readData('supplier') as $isi)
           { ?>
        
           <td><?php echo $nomor++; ?></td> 

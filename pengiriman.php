@@ -107,7 +107,7 @@
         		include 'logic/oop.php';
                 $oop = new oop() ; 
                     $nomor=1; 
-                foreach ($oop->readKirim() as $isi)
+                foreach ($oop->readData('kirim') as $isi)
         		
         	{ echo "
         	<td> $nomor</td> 

@@ -105,7 +105,7 @@
             $oop = new oop(); 
             $nomor=1; 
             
-          foreach ($oop->readPelanggan() as $isi)
+          foreach ($oop->readData('pelanggan') as $isi)
           {  ?>
 
           <td><?php echo $nomor++; ?></td> 
