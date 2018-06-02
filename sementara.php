@@ -166,7 +166,7 @@
         $oop= new oop();
             $nomor=1; 
             
-          foreach ($oop->readSementara() as $isi)
+          foreach ($oop->readData('brg_sementara') as $isi)
           {  ?>
 
           <td><?php echo $nomor++; ?></td> 
@@ -180,7 +180,7 @@
         <?php
       } 
       ?>
-
+s
       </table>
     </div>
   </div>

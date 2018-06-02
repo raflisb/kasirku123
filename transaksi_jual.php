@@ -149,14 +149,21 @@
                              <div class="control-group">
                                       <label class="control-label">Nama Pelanggan</label>
                                       <div class="controls">
-                                         <input type="text" class="span9" name="nama_plgn" />  
+                                      <select  name="id_plgn">  
+                                            <?php 
+                                                foreach($oop->readData('pelanggan') as $value)
+                                                {?> 
+                                                <option value="<?php echo $value['id_plgn']; ?>"><?php echo $value['nama_plgn']; ?> 
+                                                <?php } ?> 
+                                            </select> 
+
                                       </div>
                             </div>
 
                              <div class="control-group">
                                       <label class="control-label">Jenis Pembayaran</label>
                                       <div class="controls">
-                                         <select class="span9" name="jenis_bayar">
+                                         <select name="jenis_bayar">
                                                 <option value="cash">Cash</option>
                                                 <option value="debit">Debit</option>
                                                 <option value="bg">Bilyet Giro</option>
@@ -169,14 +176,7 @@
                                       <label class="control-label">Kredit</label>
                                       <div class="controls">
                                        Ya  : <input type="radio" name="kredit" value="Y" /> &nbsp
-                                       Tidak : <input type="radio" name="kredit" value="T" />
-                                      </div>
-                            </div>
-
-                             <div class="control-group">
-                                      <label class="control-label">DP</label>
-                                      <div class="controls">
-                                         <input type="number" class="span9" name="dp" />  
+                                       Tidak : <input type="radio" name="kredit" value="N" />
                                       </div>
                             </div>
 
@@ -184,6 +184,23 @@
                                       <label class="control-label">Total</label>
                                       <div class="controls">
                                          <input type="number" name="jmlh_harga_jual" value="<?php echo $isi['total_bayar']; ?>"> 
+                                      </div>
+                            </div>
+
+
+                             <div class="control-group">
+                                      <label class="control-label">DP</label>
+                                      <div class="controls">
+                                         <input type="number" name="dp" />  
+                                      </div>
+                            </div>
+
+                         
+                            
+                            <div class="control-group">
+                                      <label class="control-label">Tenor</label>
+                                      <div class="controls">
+                                         <input type="number" name="tenor" > 
                                       </div>
                             </div>
 

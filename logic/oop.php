@@ -213,21 +213,22 @@
 		return $ini; 
 	}	
 
-	function kredit() 
-	{
-		$kredit= $_POST['kredit']; 
+	public function testing() 
+	{ 
+		$query_no= "SELECT MAX(no_nota_jual) as last from transaksi_jual";
 
-		if($kredit == "Y")
-		{
-			echo "berhasil";
+		$hasil_no = $this->con->query($query_no); 
+		$isi_hasil_no = mysqli_fetch_array($hasil_no); 
+		$no_terakhir = $isi_hasil_no['last']; 
+		
+		
+		$terakhir = substr($no_terakhir,2,2);
+		$no_selanjutnya= $terakhir+1; 
+		
 
-
-		}
-		else {
-			echo "gagal";
-		}
-	
-
+		$nj= 'NJ';
+		$no_baru = $nj.sprintf('%02s', $no_selanjutnya);
+		return $no_baru; 
 	}
 
 	function insertTransaksiJual() 
@@ -248,10 +249,23 @@
 
 		$nj= 'NJ';
 		$no_baru = $nj.sprintf('%02s', $no_selanjutnya);
-		return $no_baru; 
-		// end auto increment		
 		
+		// end auto increment	
+		
+		// cicilan auto increment 
 
+		$query_id_cicilan= "SELECT MAX(id_cicilan) as last from cicilan "; 
+		$do_query_id_cicilan = $this->con->query($query_id_cicilan); 
+		$isi_hasil_id=$do_query_id_cicilan->fetch_assoc(); 
+		$id_terakhir=$isi_hasil_id['last']; 
+
+		$no_id = substr($id_terakhir,1,2);
+		$id_selanjutnya=$no_id+1; 
+
+		$c="C"; 
+		$id_cicilan_baru= $c.sprintf('%02s', $id_selanjutnya);
+		
+		// end cicilan auto increment
 
 		$query_sementara = "SELECT * FROM brg_sementara"; 
 		$hasil_sementara = $this->con->query($query_sementara);
@@ -264,30 +278,69 @@
 			$kredit = $_POST['kredit']; 
 			$jmlh_harga_jual = $_POST ['jmlh_harga_jual'];
 			$dp = $_POST['dp'];
+			$tenor=$_POST['tenor']; 
 			$tgl = date('y-m-d');
 			$tgl_trsj = $tgl; 
+			$id_plgn= $_POST['id_plgn'];
+			
 
 
-			$query_insert_transaksi="insert into transaksi_jual values ('$no_baru', NULL,'$jenis_bayar', '$kredit', '$jmlh_harga_jual', '$dp', '$tgl')"; 
-			$insert_transaksi = $this->con->query($query_insert_transaksi);
+			if ($kredit == "N")
+			{
+				$query_insert_transaksi="insert into transaksi_jual values ('$no_baru', '$id_plgn','$jenis_bayar', '$kredit', '$jmlh_harga_jual', '$dp', '$tgl')"; 
+				$insert_transaksi = $this->con->query($query_insert_transaksi);
+	
+	
+				$kode_sementara = "select * from barang where nama_brg ='$nama_brg_sementara'";
+				$query_kode= $this->con->query($kode_sementara);
+				while ($isi_kode = mysqli_fetch_array($query_kode))
+					{
+						$kode_barang = $isi_kode['kode_brg'];
+						$stok_brg= $isi_kode['stok_brg'];
+						$stok_akhir = $stok_brg - $stok_brg_sementara; 
+						$query_insert_detail = "insert into detail_transaksi_jual values ('$no_baru', '$kode_barang', '$stok_brg_sementara')"; 
+						$insert_detail= $this->con->query($query_insert_detail); 
+					
+						$query_update_barang = "update barang set stok_brg = '$stok_akhir' where nama_brg ='$nama_brg_sementara'";
+						$update_barang= $this->con->query($query_update_barang); 
+	
+						$query_hapus_sementara= "delete from brg_sementara";
+						$hapus_sementara = $this->con->query($query_hapus_sementara); 
+						header("location:../index.php"); 
 
+					}
+			}
+			else if ($kredit =="Y")
+			{
+				$query_insert_transaksi="insert into transaksi_jual values ('$no_baru', '$id_plgn','$jenis_bayar', '$kredit', '$jmlh_harga_jual', '$dp', '$tgl')"; 
+				$insert_transaksi = $this->con->query($query_insert_transaksi);
+				$harga_ccl= $jmlh_harga_jual - $dp; 
+				$harga_perccl = $harga_ccl / $tenor; 
 
-			$kode_sementara = "select * from barang where nama_brg ='$nama_brg_sementara'";
-			$query_kode= $this->con->query($kode_sementara);
-			while ($isi_kode = mysqli_fetch_array($query_kode))
-				{
-					$kode_barang = $isi_kode['kode_brg'];
-					$stok_brg= $isi_kode['stok_brg'];
-					$stok_akhir = $stok_brg - $stok_brg_sementara; 
-					$query_insert_detail = "insert into detail_transaksi_jual values ('$no_baru', '$kode_barang', '$stok_brg_sementara')"; 
-					$insert_detail= $this->con->query($query_insert_detail); 
+				$query_insert_cicilan="insert into cicilan values ('$id_cicilan_baru','$no_baru', '$harga_perccl', '$dp', '$tgl','$tenor')"; 
+				$do_query_insert_cicilan=$this->con->query($query_insert_cicilan); 
 				
-					$query_update_barang = "update barang set stok_brg = '$stok_akhir' where nama_brg ='$nama_brg_sementara'";
-					$update_barang= $this->con->query($query_update_barang); 
+	
+				$kode_sementara = "select * from barang where nama_brg ='$nama_brg_sementara'";
+				$query_kode= $this->con->query($kode_sementara);
+				while ($isi_kode = mysqli_fetch_array($query_kode))
+					{
+						$kode_barang = $isi_kode['kode_brg'];
+						$stok_brg= $isi_kode['stok_brg'];
+						$stok_akhir = $stok_brg - $stok_brg_sementara; 
+						$query_insert_detail = "insert into detail_transaksi_jual values ('$no_baru', '$kode_barang', '$stok_brg_sementara')"; 
+						$insert_detail= $this->con->query($query_insert_detail); 
+					
+						$query_update_barang = "update barang set stok_brg = '$stok_akhir' where nama_brg ='$nama_brg_sementara'";
+						$update_barang= $this->con->query($query_update_barang); 
+	
+						$query_hapus_sementara= "delete from brg_sementara";
+						$hapus_sementara = $this->con->query($query_hapus_sementara); 
+						header("location:../daftar_cicilan.php"); 
+					}
+			}
 
-					$query_hapus_sementara= "delete from brg_sementara";
-					$hapus_sementara = $this->con->query($query_hapus_sementara); 
-				}
+		
 
 		}	
 	}
