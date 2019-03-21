@@ -6,7 +6,7 @@
                     <a href="#" class="brand">
                         <small>
                             <i class="icon-desktop"></i>
-                            Kasirku 123 
+                            Kasirku 123 | Rafli Setiawan Bantu | SI ITATS |
                         </small>
                     </a>
                     <!-- END Brand -->
